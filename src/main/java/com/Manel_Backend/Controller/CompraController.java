@@ -25,13 +25,6 @@ public class CompraController {
         return "listadoCompras.html";
     }
 
-    @GetMapping("/compras/{id}/detalles")
-    public String verDetallesCompra(@PathVariable Long id, Model model) {
-        Compra compra = compraService.obtenerPorId(id);
-        model.addAttribute("compra", compra);
-        return "detalles-compra"; // nombre del HTML sin extensión
-    }
-
     /*
     @GetMapping("/agregarProducto")
     public String agregarProductoForm(Model model) {
