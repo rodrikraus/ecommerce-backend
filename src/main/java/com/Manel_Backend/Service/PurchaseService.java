@@ -5,7 +5,7 @@ import com.Manel_Backend.Dtos.PurchaseRequest;
 import com.Manel_Backend.Models.Compra;
 import com.Manel_Backend.Models.ItemCompra;
 import com.Manel_Backend.Models.Product;
-import com.Manel_Backend.Repository.OrderRepository;
+import com.Manel_Backend.Repository.CompraRepository;
 import com.Manel_Backend.Repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,10 @@ public class PurchaseService {
     private ProductRepository productRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private CompraRepository compraRepository;
 
     @Transactional
-    public Compra createOrder(PurchaseRequest request) {
+    public Compra createCompra(PurchaseRequest request) {
         BigDecimal totalAmount = BigDecimal.ZERO;
         List<ItemCompra> itemCompras = new ArrayList<>();
 
@@ -54,12 +54,12 @@ public class PurchaseService {
             totalAmount = totalAmount.add(itemTotal);
         }
 
-        // Create order
+        // Crear compra
         Compra compra = new Compra();
-        compra.setOrderDate(LocalDateTime.now());
+        compra.setFechaCompra(LocalDateTime.now());
         compra.setItems(itemCompras);
         compra.setTotalAmount(totalAmount);
 
-        return orderRepository.save(compra);
+        return compraRepository.save(compra);
     }
 }

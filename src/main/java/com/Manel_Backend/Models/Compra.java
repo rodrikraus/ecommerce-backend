@@ -15,7 +15,7 @@ public class Compra {
     @Id
     @GeneratedValue
     private Long id;
-    private LocalDateTime orderDate;
+    private LocalDateTime fechaCompra;
     private BigDecimal totalAmount;
 
     @OneToMany(cascade = CascadeType.ALL)

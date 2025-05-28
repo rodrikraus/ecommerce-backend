@@ -22,7 +22,7 @@ public class PurchaseController {
     @PostMapping
     public ResponseEntity<?> createPurchase(@RequestBody PurchaseRequest request) {
         try {
-            Compra compra = purchaseService.createOrder(request);
+            Compra compra = purchaseService.createCompra(request);
             return ResponseEntity.ok(compra);
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
