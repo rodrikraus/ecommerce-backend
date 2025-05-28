@@ -11,13 +11,26 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Table(name = "compras")
 public class Compra {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime fechaCompra;
     private BigDecimal totalAmount;
+    private String shippingAddress;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<ItemCompra> items;
+    
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CompraItem> items;
+
+
 }
+
+
