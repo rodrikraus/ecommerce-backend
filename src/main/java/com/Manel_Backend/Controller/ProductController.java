@@ -20,13 +20,13 @@ public class ProductController {
     public String verProductos(Model model) {
         List<Product> listaProductos = productService.verProductos();
         model.addAttribute("productos", listaProductos);
-        return "listadoProductos";
+        return "listadoProductos.html";
     }
 
     @GetMapping("/agregarProducto")
     public String agregarProductoForm(Model model) {
         model.addAttribute("nuevoProducto", new Product());
-        return "agregarProducto";
+        return "agregarProducto.html";
     }
 
     @PostMapping("/guardarProductoNuevo")
@@ -39,7 +39,7 @@ public class ProductController {
     public String modificarProducto(@PathVariable long id, Model model) {
         Product producto = productService.buscarProducto(id);
         model.addAttribute("producto", producto);
-        return "modificarProducto";
+        return "modificarProducto.html";
     }
 
     @PostMapping("guardarModificacionProducto")
