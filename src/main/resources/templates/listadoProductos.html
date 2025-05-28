@@ -1,10 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <title>Listado de productos</title>
 </head>
 <body>
+<div class="container">
+    <h4 class="text-center mt-2">LISTADO PRODUCTOS</h4>
+    <hr>
+    <!-- Botón para agregar producto -->
+    <div class="col-lg-3">
+        <a class="btn btn-primary" th:href="@{/productos/agregarProducto}" role="button">Agregar producto</a>
+    </div>
+    <table class="table">
+        <thead class="table-light">
+        <tr class="table-info">
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Descripcion</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="producto : ${productos}">
+            <td th:text="${producto.id}"></td>
+            <td th:text="${producto.name}"></td>
+            <td th:text="${producto.price}"></td>
+            <td th:text="${producto.stock}"></td>
+            <td th:text="${producto.description}"></td>
+            <td>
+                <a class="btn btn-success" th:href="@{/productos/modificarProducto/{id}(id=${producto.id})}" role="button">Modificar</a>
+            </td>
+            <td>
+                <a class="btn btn-danger" th:href="@{/productos/borrar/{id}(id=${producto.id})}" onclick="return confirmarBorrado()" role="button">Borrar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
+    <div th:if="${productos == null or productos.empty}">
+        La lista de productos está vacía.
+    </div>
+</div>
+
+<script>
+    function confirmarBorrado() {
+        return confirm('¿Estás seguro que deseas borrar este producto?');
+    }
+</script>
 </body>
 </html>

@@ -2,8 +2,8 @@ package com.Manel_Backend.Service;
 
 import com.Manel_Backend.Dtos.CartItemDto;
 import com.Manel_Backend.Dtos.PurchaseRequest;
-import com.Manel_Backend.Models.Order;
-import com.Manel_Backend.Models.OrderItem;
+import com.Manel_Backend.Models.Compra;
+import com.Manel_Backend.Models.ItemCompra;
 import com.Manel_Backend.Models.Product;
 import com.Manel_Backend.Repository.OrderRepository;
 import com.Manel_Backend.Repository.ProductRepository;
@@ -26,9 +26,9 @@ public class PurchaseService {
     private OrderRepository orderRepository;
 
     @Transactional
-    public Order createOrder(PurchaseRequest request) {
+    public Compra createOrder(PurchaseRequest request) {
         BigDecimal totalAmount = BigDecimal.ZERO;
-        List<OrderItem> orderItems = new ArrayList<>();
+        List<ItemCompra> itemCompras = new ArrayList<>();
 
         // Validate products and calculate total
         for (CartItemDto item : request.getItems()) {
@@ -45,21 +45,21 @@ public class PurchaseService {
 
             BigDecimal itemTotal = product.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
 
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProductId(product.getId());
-            orderItem.setQuantity(item.getQuantity());
-            orderItem.setPrice(product.getPrice());
-            orderItems.add(orderItem);
+            ItemCompra itemCompra = new ItemCompra();
+            itemCompra.setProductId(product.getId());
+            itemCompra.setQuantity(item.getQuantity());
+            itemCompra.setPrice(product.getPrice());
+            itemCompras.add(itemCompra);
 
             totalAmount = totalAmount.add(itemTotal);
         }
 
         // Create order
-        Order order = new Order();
-        order.setOrderDate(LocalDateTime.now());
-        order.setItems(orderItems);
-        order.setTotalAmount(totalAmount);
+        Compra compra = new Compra();
+        compra.setOrderDate(LocalDateTime.now());
+        compra.setItems(itemCompras);
+        compra.setTotalAmount(totalAmount);
 
-        return orderRepository.save(order);
+        return orderRepository.save(compra);
     }
 }

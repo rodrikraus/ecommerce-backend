@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OrderItem {
+public class ItemCompra {
     @Id
     @GeneratedValue
     private Long id;

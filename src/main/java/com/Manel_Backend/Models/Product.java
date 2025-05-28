@@ -1,21 +1,23 @@
 package com.Manel_Backend.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
+@Data
 @AllArgsConstructor
-@Getter
-@Setter
+@NoArgsConstructor
+@Table(name = "productos")
 public class Product {
     @Id
+    @GeneratedValue
     private Long id;
+
+    @Column (name = "name", nullable = false)
     private String name;
     private BigDecimal price;
     private Integer stock;
+    private String description;
 }

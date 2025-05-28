@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Order {
+public class Compra {
     @Id
     @GeneratedValue
     private Long id;
@@ -19,5 +19,5 @@ public class Order {
     private BigDecimal totalAmount;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<OrderItem> items;
+    private List<ItemCompra> items;
 }
