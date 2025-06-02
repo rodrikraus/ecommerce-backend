@@ -13,6 +13,7 @@
     <div class="col-lg-3">
         <a class="btn btn-primary" th:href="@{/productos/agregarProducto}" role="button">Agregar producto</a>
     </div>
+    <input type="text" id="searchBar" placeholder="Buscar productos..." class="form-control my-3">
     <table class="table">
         <thead class="table-light">
         <tr class="table-info">
@@ -53,6 +54,26 @@
     function confirmarBorrado() {
         return confirm('¿Estás seguro que deseas borrar este producto?');
     }
+
+    const searchBar = document.getElementById('searchBar');
+    const tableRows = document.querySelectorAll('tbody tr');
+
+    searchBar.addEventListener('keyup', function() {
+        const searchTerm = searchBar.value.toLowerCase();
+
+        tableRows.forEach(function(row) {
+            const id = row.cells[0].textContent.toLowerCase();
+            const nombre = row.cells[1].textContent.toLowerCase();
+            const precio = row.cells[2].textContent.toLowerCase();
+            const stock = row.cells[3].textContent.toLowerCase();
+
+            if (id.includes(searchTerm) || nombre.includes(searchTerm) || precio.includes(searchTerm) || stock.includes(searchTerm)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
 </script>
 </body>
 </html>
