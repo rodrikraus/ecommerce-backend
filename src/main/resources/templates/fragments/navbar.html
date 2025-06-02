@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="adminNavbar" th:if="${session.loggedInUser != null and session.userRole == 'admin'}">
+    <ul>
+        <li><a th:href="@{/productos}">Productos</a></li>
+        <li><a th:href="@{/compras}">Compras</a></li>
+        <li>
+            <form th:action="@{/logout}" method="get"> <!-- Or post if logout is changed to post -->
+                <button type="submit">Logout</button>
+            </form>
+        </li>
+    </ul>
+    <!-- Basic styling can be added here or in a separate CSS file if desired -->
+    <style>
+        nav[th\:fragment="adminNavbar"] ul { list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: #333; }
+        nav[th\:fragment="adminNavbar"] li { float: left; }
+        nav[th\:fragment="adminNavbar"] li a, nav[th\:fragment="adminNavbar"] button { display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none; background: none; border: none; cursor: pointer; font-family: inherit; font-size: inherit; }
+        nav[th\:fragment="adminNavbar"] li a:hover, nav[th\:fragment="adminNavbar"] button:hover { background-color: #111; }
+    </style>
+</nav>
+
+</body>
+</html>
