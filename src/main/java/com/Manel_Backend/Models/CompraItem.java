@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 public class CompraItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     private int quantity;
     private BigDecimal unitPrice;
