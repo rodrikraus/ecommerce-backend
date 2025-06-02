@@ -9,16 +9,20 @@
 <div class="container">
     <h4 class="text-center mt-2">LISTADO DE COMPRAS</h4>
     <hr>
+
+    <div class="mb-3">
+        <input type="text" id="searchComprasBar" class="form-control" placeholder="Buscar en compras (ID, Usuario, Fecha, Total, Dirección)...">
+    </div>
     
     <table class="table">
         <thead class="table-light">
         <tr class="table-info">
-            <th>ID</th>
-            <th>Usuario</th>
-            <th>Fecha</th>
-            <th>Total</th>
-            <th>Dirección</th>
-            <th>Ítems</th>
+            <th scope="col" data-column="0" style="cursor: pointer;">ID</th>
+            <th scope="col" data-column="1" style="cursor: pointer;">Usuario</th>
+            <th scope="col" data-column="2" style="cursor: pointer;">Fecha</th>
+            <th scope="col" data-column="3" style="cursor: pointer;">Total</th>
+            <th scope="col" data-column="4" style="cursor: pointer;">Dirección</th>
+            <th scope="col">Ítems</th>
         </tr>
         </thead>
         <tbody>
@@ -32,10 +36,11 @@
                 <ul>
                     <li th:each="item : ${compra.items}">
                         <span th:text="${item.product.name}"></span>
+                        <span th:text="${item.unitPrice}"></span>
                         x
                         <span th:text="${item.quantity}"></span>
                         =
-                        <span th:text="${item.unitPrice}"></span>
+                        <span th:text="${item.unitPrice}*${item.quantity}"></span>
                     </li>
                 </ul>
             </td>
@@ -47,5 +52,107 @@
         La lista de compras está vacía.
     </div>
 </div>
+
+<script>
+    // Helper function to parse date strings in 'dd/MM/yyyy HH:mm' format
+    function parseDate(dateStr) {
+        const parts = dateStr.split(' ');
+        const dateParts = parts[0].split('/');
+        const timeParts = parts[1].split(':');
+        // new Date(year, monthIndex (0-11), day, hours, minutes)
+        return new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1]);
+    }
+
+    const table = document.querySelector('.table');
+    // Query for headers with data-column attribute
+    const headers = table.querySelectorAll('thead th[data-column]');
+    const tbody = table.querySelector('tbody');
+    const originalTableRows = Array.from(tbody.querySelectorAll('tr')); // Store original rows
+    let currentSortColumn = -1;
+    let sortDirections = Array(headers.length).fill('asc');
+    const upArrow = " ↑";
+    const downArrow = " ↓";
+
+    function applySort(column, keepDirection = false) {
+        if (!keepDirection) {
+            if (currentSortColumn === column) {
+                sortDirections[column] = sortDirections[column] === 'asc' ? 'desc' : 'asc';
+            } else {
+                if (currentSortColumn !== -1 && sortDirections[currentSortColumn] !== undefined) {
+                    sortDirections[currentSortColumn] = 'asc';
+                }
+                currentSortColumn = column;
+                sortDirections[column] = 'asc';
+            }
+        }
+
+        const direction = sortDirections[column] === 'asc' ? 1 : -1;
+        // Always get rows from tbody, as it might be filtered
+        let rowsToSort = Array.from(tbody.querySelectorAll('tr'));
+
+        rowsToSort.sort((a, b) => {
+            const aVal = a.cells[column].textContent;
+            const bVal = b.cells[column].textContent;
+            switch (column) {
+                case 0: case 3: return (parseFloat(aVal) - parseFloat(bVal)) * direction;
+                case 1: case 4: return aVal.localeCompare(bVal) * direction;
+                case 2: return (parseDate(aVal) - parseDate(bVal)) * direction;
+                default: return 0;
+            }
+        });
+
+        tbody.innerHTML = '';
+        rowsToSort.forEach(row => tbody.appendChild(row));
+
+        headers.forEach(th => {
+            let headerText = th.textContent.replace(upArrow, '').replace(downArrow, '');
+            if (parseInt(th.dataset.column) === currentSortColumn) {
+                headerText += sortDirections[currentSortColumn] === 'asc' ? upArrow : downArrow;
+            }
+            th.textContent = headerText;
+        });
+    }
+
+    headers.forEach((header) => {
+        header.addEventListener('click', () => {
+            const column = parseInt(header.dataset.column);
+            applySort(column);
+        });
+    });
+
+    // Search functionality
+    const searchBar = document.getElementById('searchComprasBar');
+    searchBar.addEventListener('keyup', function() {
+        const searchTerm = searchBar.value.toLowerCase();
+        
+        tbody.innerHTML = ''; // Clear current rows to re-populate
+
+        const filteredRows = originalTableRows.filter(row => {
+            const idText = row.cells[0].textContent.toLowerCase();
+            const usuarioText = row.cells[1].textContent.toLowerCase();
+            const fechaText = row.cells[2].textContent.toLowerCase();
+            const totalText = row.cells[3].textContent.toLowerCase();
+            const direccionText = row.cells[4].textContent.toLowerCase();
+            
+            const match = idText.includes(searchTerm) ||
+                   usuarioText.includes(searchTerm) ||
+                   fechaText.includes(searchTerm) ||
+                   totalText.includes(searchTerm) ||
+                   direccionText.includes(searchTerm);
+            
+            // Important: Directly append filtered rows here.
+            // The applySort function will then work on these appended rows.
+            if (match) {
+                tbody.appendChild(row.cloneNode(true)); // Append a clone to tbody
+            }
+            return match; // Still needed for any other use of filteredRows, though direct append is primary
+        });
+
+        // If a sort is active, re-apply it to the filtered & appended rows
+        if (currentSortColumn !== -1) {
+            applySort(currentSortColumn, true); // true to keep current direction
+        }
+    });
+</script>
 </body>
 </html>
