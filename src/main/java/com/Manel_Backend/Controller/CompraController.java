@@ -1,9 +1,7 @@
 package com.Manel_Backend.Controller;
 
 import com.Manel_Backend.Models.Compra;
-import com.Manel_Backend.Models.Product;
 import com.Manel_Backend.Service.CompraService;
-import com.Manel_Backend.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
