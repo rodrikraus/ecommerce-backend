@@ -37,11 +37,11 @@
                 <ul>
                     <li th:each="item : ${compra.items}">
                         <span th:text="${item.product.name}"></span>
-                        <span th:text="${item.unitPrice}"></span>
+                        <span th:text="'$'+${item.unitPrice}"></span>
                         x
-                        <span th:text="${item.quantity}"></span>
+                        <span th:text="${item.quantity} + ' unidades'"></span>
                         =
-                        <span th:text="${item.unitPrice}*${item.quantity}"></span>
+                        <span th:text="'$' + ${item.unitPrice}*${item.quantity}"></span>
                     </li>
                 </ul>
             </td>
