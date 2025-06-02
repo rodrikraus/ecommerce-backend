@@ -17,10 +17,10 @@
     <table class="table">
         <thead class="table-light">
         <tr class="table-info">
-            <th scope="col">ID</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Precio</th>
-            <th scope="col">Stock</th>
+            <th scope="col" data-column="0" style="cursor: pointer;">ID</th>
+            <th scope="col" data-column="1" style="cursor: pointer;">Nombre</th>
+            <th scope="col" data-column="2" style="cursor: pointer;">Precio</th>
+            <th scope="col" data-column="3" style="cursor: pointer;">Stock</th>
             <th scope="col">Descripcion</th>
             <th scope="col">Url de imagen</th>
             <th scope="col"></th> <!-- Columna vacía para el botón de modificar -->
@@ -56,12 +56,14 @@
     }
 
     const searchBar = document.getElementById('searchBar');
-    const tableRows = document.querySelectorAll('tbody tr');
+    const originalTableRows = Array.from(document.querySelectorAll('tbody tr')); // Store original rows
+    let displayedTableRows = [...originalTableRows]; // Rows currently displayed (can be filtered)
 
     searchBar.addEventListener('keyup', function() {
         const searchTerm = searchBar.value.toLowerCase();
+        displayedTableRows = []; // Reset displayed rows
 
-        tableRows.forEach(function(row) {
+        originalTableRows.forEach(function(row) {
             const id = row.cells[0].textContent.toLowerCase();
             const nombre = row.cells[1].textContent.toLowerCase();
             const precio = row.cells[2].textContent.toLowerCase();
@@ -69,9 +71,81 @@
 
             if (id.includes(searchTerm) || nombre.includes(searchTerm) || precio.includes(searchTerm) || stock.includes(searchTerm)) {
                 row.style.display = "";
+                displayedTableRows.push(row); // Add to displayed if matches
             } else {
                 row.style.display = "none";
             }
+        });
+        // After filtering, if a sort is active, re-apply it to the filtered rows
+        if (currentSortColumn !== -1) {
+             applySort(currentSortColumn, true); // true to keep current direction
+        }
+    });
+
+    // Sorting implementation
+    const table = document.querySelector('.table');
+    const headers = table.querySelectorAll('thead th[data-column]');
+    const tbody = table.querySelector('tbody');
+    let currentSortColumn = -1;
+    // Initialize sortDirections based on the number of sortable columns
+    let sortDirections = Array(headers.length).fill('asc'); 
+    const upArrow = " ↑";
+    const downArrow = " ↓";
+
+    function applySort(column, keepDirection = false) {
+        // Update sort direction
+        if (!keepDirection) {
+            if (currentSortColumn === column) {
+                sortDirections[column] = sortDirections[column] === 'asc' ? 'desc' : 'asc';
+            } else {
+                if (currentSortColumn !== -1 && sortDirections[currentSortColumn]) { // Check if currentSortColumn is valid
+                    sortDirections[currentSortColumn] = 'asc';
+                }
+                currentSortColumn = column;
+                sortDirections[column] = 'asc';
+            }
+        }
+
+        const direction = sortDirections[column] === 'asc' ? 1 : -1;
+        const isNumericColumn = column === 0 || column === 2 || column === 3; // ID, Precio, Stock
+
+        // Sort displayedTableRows instead of tableRows
+        displayedTableRows.sort((a, b) => {
+            const aVal = a.cells[column].textContent;
+            const bVal = b.cells[column].textContent;
+
+            if (isNumericColumn) {
+                const numA = parseFloat(aVal);
+                const numB = parseFloat(bVal);
+                if (isNaN(numA) && isNaN(numB)) return 0;
+                if (isNaN(numA)) return 1 * direction; // Put NaNs at the end
+                if (isNaN(numB)) return -1 * direction; // Put NaNs at the end
+                return (numA - numB) * direction;
+            } else {
+                return aVal.localeCompare(bVal) * direction;
+            }
+        });
+
+        // Update table display
+        tbody.innerHTML = ''; // Clear existing rows
+        displayedTableRows.forEach(row => tbody.appendChild(row));
+
+        // Update header arrows
+        headers.forEach(th => {
+            let headerText = th.textContent.replace(upArrow, '').replace(downArrow, '');
+            // th.dataset.column is a string, currentSortColumn is a number.
+            if (parseInt(th.dataset.column) === currentSortColumn) {
+                 // Use currentSortColumn to access sortDirections, as it's the true index for the sorted column
+                headerText += sortDirections[currentSortColumn] === 'asc' ? upArrow : downArrow;
+            }
+            th.textContent = headerText;
+        });
+    }
+
+    headers.forEach((header) => {
+        header.addEventListener('click', () => {
+            const column = parseInt(header.dataset.column);
+            applySort(column);
         });
     });
 </script>
