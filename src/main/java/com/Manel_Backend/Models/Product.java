@@ -21,4 +21,5 @@ public class Product {
     private Integer stock;
     private String description;
     private String imageUrl;
+    private String tags;
 }
