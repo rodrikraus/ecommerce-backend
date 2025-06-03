@@ -43,18 +43,4 @@ public class ProductRestController {
     public Product buscarProducto(@PathVariable Long id) {
         return productService.buscarProducto(id);
     }
-
-    /* PLACEHOLDER, NO VEO LA NECESIDAD DE ACTUALIZAR UN PRODUCTO DESDE EL FRONT PUDIENDOSE HACER DESDE EL BACK
-    @PutMapping("/actualizar_producto/{id}")
-    @ResponseBody
-    public void actualizarProduct(@PathVariable("id") long id, @RequestBody Product p) {
-        Product producto = productService.buscarProducto(id);
-        if(!producto.equals(null)) {
-            producto.setNombre(p.getNombre());
-            producto.setApellido(p.getApellido());
-            producto.setEmail(p.getEmail());
-            productService.actualizarProduct(p);
-        }
-    }
-    */
 }

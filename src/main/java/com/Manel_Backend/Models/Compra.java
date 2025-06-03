@@ -19,12 +19,13 @@ public class Compra {
     private Long id;
     private LocalDateTime fechaCompra;
     private BigDecimal totalAmount;
+    private String email;
     private String shippingAddress;
 
-    
+    /* No hay autenticación de usuarios
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user;*/
 
     
     @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)

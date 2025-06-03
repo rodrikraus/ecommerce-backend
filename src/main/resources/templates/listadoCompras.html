@@ -12,14 +12,14 @@
     <hr>
 
     <div class="mb-3">
-        <input type="text" id="searchComprasBar" class="form-control" placeholder="Buscar en compras (ID, Usuario, Fecha, Total, Dirección)...">
+        <input type="text" id="searchComprasBar" class="form-control" placeholder="Buscar en compras (ID, Email, Fecha, Total, Dirección)...">
     </div>
     
     <table class="table">
         <thead class="table-light">
         <tr class="table-info">
             <th scope="col" data-column="0" style="cursor: pointer;">ID</th>
-            <th scope="col" data-column="1" style="cursor: pointer;">Usuario</th>
+            <th scope="col" data-column="1" style="cursor: pointer;">Email</th>
             <th scope="col" data-column="2" style="cursor: pointer;">Fecha</th>
             <th scope="col" data-column="3" style="cursor: pointer;">Total</th>
             <th scope="col" data-column="4" style="cursor: pointer;">Dirección</th>
@@ -29,9 +29,9 @@
         <tbody>
         <tr th:each="compra : ${compras}" class="align-middle">
             <td th:text="${compra.id}"></td>
-            <td th:text="${compra.user.username}"></td>
+            <td th:text="${compra.email}"></td>
             <td th:text="${#temporals.format(compra.fechaCompra, 'dd/MM/yyyy HH:mm')}"></td>
-            <td th:text="${compra.totalAmount}"></td>
+            <td th:text="'$'+${compra.totalAmount}"></td>
             <td th:text="${compra.shippingAddress}"></td>
             <td>
                 <ul>
