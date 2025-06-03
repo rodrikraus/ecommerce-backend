@@ -24,7 +24,7 @@
             <th scope="col" data-column="3" style="cursor: pointer;">Stock</th>
             <th scope="col" data-column="4">Descripción</th>
             <th scope="col">Url de imagen</th>
-            <th scope="col" data-column="5">Tags</th>
+            <th scope="col" data-column="6">Tags</th>
             <th scope="col"></th> <!-- Columna vacía para el botón de modificar -->
             <th scope="col"></th> <!-- Columna vacía para el botón de borrar -->
         </tr>
@@ -72,7 +72,7 @@
             const precio = row.cells[2].textContent.toLowerCase();
             const stock = row.cells[3].textContent.toLowerCase();
             const desc = row.cells[4].textContent.toLowerCase();
-            const tags = row.cells[5].textContent.toLowerCase();
+            const tags = row.cells[6].textContent.toLowerCase();
 
             if (id.includes(searchTerm) || 
             nombre.includes(searchTerm) || 
