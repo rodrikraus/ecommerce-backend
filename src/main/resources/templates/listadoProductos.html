@@ -22,7 +22,7 @@
             <th scope="col" data-column="1" style="cursor: pointer;">Nombre</th>
             <th scope="col" data-column="2" style="cursor: pointer;">Precio</th>
             <th scope="col" data-column="3" style="cursor: pointer;">Stock</th>
-            <th scope="col">Descripción</th>
+            <th scope="col" data-column="4">Descripción</th>
             <th scope="col">Url de imagen</th>
             <th scope="col"></th> <!-- Columna vacía para el botón de modificar -->
             <th scope="col"></th> <!-- Columna vacía para el botón de borrar -->
@@ -69,8 +69,9 @@
             const nombre = row.cells[1].textContent.toLowerCase();
             const precio = row.cells[2].textContent.toLowerCase();
             const stock = row.cells[3].textContent.toLowerCase();
+            const desc = row.cells[4].textContent.toLowerCase();
 
-            if (id.includes(searchTerm) || nombre.includes(searchTerm) || precio.includes(searchTerm) || stock.includes(searchTerm)) {
+            if (id.includes(searchTerm) || nombre.includes(searchTerm) || precio.includes(searchTerm) || stock.includes(searchTerm)|| desc.includes(searchTerm)) {
                 row.style.display = "";
                 displayedTableRows.push(row); // Add to displayed if matches
             } else {

@@ -23,7 +23,7 @@
             <th scope="col" data-column="2" style="cursor: pointer;">Fecha</th>
             <th scope="col" data-column="3" style="cursor: pointer;">Total</th>
             <th scope="col" data-column="4" style="cursor: pointer;">Dirección</th>
-            <th scope="col">Ítems</th>
+            <th scope="col" data-column="5">Ítems</th>
         </tr>
         </thead>
         <tbody>
@@ -134,12 +134,14 @@
             const fechaText = row.cells[2].textContent.toLowerCase();
             const totalText = row.cells[3].textContent.toLowerCase();
             const direccionText = row.cells[4].textContent.toLowerCase();
+            const it = row.cells[5].textContent.toLowerCase();
             
             const match = idText.includes(searchTerm) ||
                    usuarioText.includes(searchTerm) ||
                    fechaText.includes(searchTerm) ||
                    totalText.includes(searchTerm) ||
-                   direccionText.includes(searchTerm);
+                   direccionText.includes(searchTerm) ||
+                   it.includes(searchTerm);
             
             // Important: Directly append filtered rows here.
             // The applySort function will then work on these appended rows.
