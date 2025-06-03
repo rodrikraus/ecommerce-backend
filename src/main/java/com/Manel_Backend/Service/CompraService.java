@@ -33,6 +33,7 @@ public class CompraService {
             Product product = productService.buscarProducto(productId);
             ci.setProduct(product);
             ci.getProduct().setStock(ci.getProduct().getStock() - ci.getQuantity());
+            ci.setCompra(c);
         }
         compraRepository.save(c);
     }
