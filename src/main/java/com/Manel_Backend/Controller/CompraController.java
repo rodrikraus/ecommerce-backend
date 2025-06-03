@@ -22,28 +22,4 @@ public class CompraController {
         model.addAttribute("compras", listaCompras);
         return "listadoCompras.html";
     }
-
-    /*
-    @GetMapping("/agregarProducto")
-    public String agregarProductoForm(Model model) {
-        model.addAttribute("nuevoProducto", new Product());
-        return "agregarProducto.html";
-    }
-
-    @PostMapping("/guardarProductoNuevo")
-    public String agregarProducto(@ModelAttribute Product nuevoProducto) {
-        compraService.crearProducto(nuevoProducto);
-        return "redirect:/productos";
-    }
-
-
-    @GetMapping("/borrar/{id}")
-    public String borrarProducto(@PathVariable long id) {
-        compraService.borrarProducto(id);
-        return "redirect:/productos";
-    }
-    */
-
-
-
 }
