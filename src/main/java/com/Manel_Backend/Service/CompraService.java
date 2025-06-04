@@ -10,6 +10,8 @@ import com.Manel_Backend.Models.CompraItem;
 import com.Manel_Backend.Models.Product;
 import com.Manel_Backend.Repository.CompraRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CompraService {
     @Autowired
@@ -36,6 +38,15 @@ public class CompraService {
             ci.setCompra(c);
         }
         compraRepository.save(c);
+    }
+
+    @Transactional
+    public void borrarCompra(Long id) {
+        compraRepository.deleteById(id);
+    }
+
+    public Compra buscarCompra(Long id) {
+        return compraRepository.findById(id).orElse(null);
     }
 
 }

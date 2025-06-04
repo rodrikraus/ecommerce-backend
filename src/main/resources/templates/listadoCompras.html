@@ -24,6 +24,8 @@
             <th scope="col" data-column="3" style="cursor: pointer;">Total</th>
             <th scope="col" data-column="4" style="cursor: pointer;">Dirección</th>
             <th scope="col">Ítems</th>
+            <th scope="col"></th> <!-- Columna vacía para el botón de modificar -->
+            <th scope="col"></th> <!-- Columna vacía para el botón de borrar -->
         </tr>
         </thead>
         <tbody>
@@ -45,6 +47,12 @@
                     </li>
                 </ul>
             </td>
+                        <td>
+                <a class="btn btn-success" th:href="@{/compras/modificarCompra/{id}(id=${compra.id})}" role="button">Modificar</a>
+            </td>
+            <td>
+                <a class="btn btn-danger" th:href="@{/compras/borrar/{id}(id=${compra.id})}" onclick="return confirmarBorrado()" role="button">Borrar</a>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -55,6 +63,9 @@
 </div>
 
 <script>
+    function confirmarBorrado() {
+        return confirm('¿Estás seguro que deseas borrar este producto?');
+    }
     // Helper function to parse date strings in 'dd/MM/yyyy HH:mm' format
     function parseDate(dateStr) {
         const parts = dateStr.split(' ');
