@@ -23,7 +23,7 @@
             <th scope="col" data-column="2" style="cursor: pointer;">Fecha</th>
             <th scope="col" data-column="3" style="cursor: pointer;">Total</th>
             <th scope="col" data-column="4" style="cursor: pointer;">Dirección</th>
-            <th scope="col" data-column="5">Ítems</th>
+            <th scope="col">Ítems</th>
         </tr>
         </thead>
         <tbody>
@@ -58,10 +58,26 @@
     // Helper function to parse date strings in 'dd/MM/yyyy HH:mm' format
     function parseDate(dateStr) {
         const parts = dateStr.split(' ');
-        const dateParts = parts[0].split('/');
+    const dateParts = parts[0].split('/'); // Should be [dd, MM, yyyy]
+    let hours = 0, minutes = 0;
+
+    if (parts.length > 1 && parts[1].includes(':')) {
         const timeParts = parts[1].split(':');
-        // new Date(year, monthIndex (0-11), day, hours, minutes)
-        return new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1]);
+        hours = parseInt(timeParts[0], 10);
+        minutes = parseInt(timeParts[1], 10);
+    }
+
+    // Ensure parts are valid numbers before passing to Date constructor
+    const day = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10) - 1; // Month is 0-indexed
+    const year = parseInt(dateParts[2], 10);
+
+    if (isNaN(day) || isNaN(month) || isNaN(year) || isNaN(hours) || isNaN(minutes)) {
+        console.error("Invalid date string passed to parseDate:", dateStr);
+        return new Date(0); // Return epoch or some other default for invalid dates
+    }
+
+    return new Date(year, month, day, hours, minutes);
     }
 
     const table = document.querySelector('.table');
@@ -95,9 +111,16 @@
             const aVal = a.cells[column].textContent;
             const bVal = b.cells[column].textContent;
             switch (column) {
-                case 0: case 3: return (parseFloat(aVal) - parseFloat(bVal)) * direction;
-                case 1: case 4: return aVal.localeCompare(bVal) * direction;
-                case 2: return (parseDate(aVal) - parseDate(bVal)) * direction;
+                case 0: // ID
+                    return (parseFloat(aVal) - parseFloat(bVal)) * direction;
+                case 3: // Total
+                    const aTotal = parseFloat(aVal.replace('$', ''));
+                    const bTotal = parseFloat(bVal.replace('$', ''));
+                    return (aTotal - bTotal) * direction;
+                case 1: case 4: // Email, Dirección
+                    return aVal.localeCompare(bVal) * direction;
+                case 2: // Fecha
+                    return (parseDate(aVal) - parseDate(bVal)) * direction;
                 default: return 0;
             }
         });
