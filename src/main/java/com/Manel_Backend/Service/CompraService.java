@@ -51,22 +51,7 @@ public class CompraService {
 
     @Transactional
     public void actualizarCompra(Compra c) {
-        Compra compraExistente = compraRepository.findById(c.getId()).orElse(null);
-        //Debo modificar el stock en base a las modificaciones de la compra c
-        //Miro item por item, si aumento el pedido debo reducir ese stock, si disminuyo el pedido debo aumentar el stock
-        for(CompraItem i : c.getItems()) {
-            for(CompraItem j : compraExistente.getItems()) {
-                if(i.getId().equals(j.getId())) {
-                    if(i.getQuantity()>j.getQuantity()) {
-                        int difference = i.getQuantity()-j.getQuantity();
-                        i.getProduct().setStock(i.getProduct().getStock() - difference);
-                    } else if(i.getQuantity()<j.getQuantity()) {
-                        int difference = j.getQuantity()-i.getQuantity();
-                        i.getProduct().setStock(i.getProduct().getStock() + difference);
-                    }
-                }
-            }
-        }
+        //TODO update the stock of the products
         compraRepository.save(c);
     }
 
