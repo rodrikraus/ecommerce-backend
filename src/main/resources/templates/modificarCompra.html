@@ -19,6 +19,34 @@
             </div>
 
             <div class="mb-3">
+                <h4>Items</h4>
+                <div th:each="item, itemStat : *{items}">
+                    <input type="hidden" th:field="*{items[__${itemStat.index}__].id}" />
+                    <input type="hidden" th:field="*{items[__${itemStat.index}__].product.id}" />
+                    <div class="row mb-2">
+                        <div class="col-md-4">
+                            <label class="form-label">Producto</label>
+                            <p th:text="${item.product.name}"></p>
+                        </div>
+                        <div class="col-md-2">
+                            <label th:for="${'itemQuantity' + itemStat.index}" class="form-label">Cantidad</label>
+                            <input type="number" th:field="*{items[__${itemStat.index}__].quantity}" class="form-control" th:id="${'itemQuantity' + itemStat.index}" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Precio unitario</label>
+                            <p th:text="${item.unitPrice}"></p>
+                        </div>
+                        <div class="col-md-2">
+                            <!-- Placeholder for remove button -->
+                            <button type="button" class="btn btn-danger btn-sm mt-4">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Placeholder for add item button -->
+            <button type="button" class="btn btn-success mb-3">Add Item</button>
+
+            <div class="mb-3">
                 <label for="totalAmount" class="form-label">Total</label>
                 <input type="number" step="0.01" class="form-control" id="totalAmount" th:field="*{totalAmount}" required>
             </div>
