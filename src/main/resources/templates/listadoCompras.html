@@ -155,6 +155,12 @@
         });
     });
 
+    // Default sort by date on page load (descending)
+    document.addEventListener('DOMContentLoaded', function() {
+        applySort(2); // Initial sort (e.g., to ascending)
+        applySort(2); // Toggle to descending
+    });
+
     // Search functionality
     const searchBar = document.getElementById('searchComprasBar');
     searchBar.addEventListener('keyup', function() {

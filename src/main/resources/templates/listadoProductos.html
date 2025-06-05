@@ -159,6 +159,12 @@
             applySort(column);
         });
     });
+
+    // Default sort by ID (descending) on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        applySort(0); // Sort by ID column (index 0) - initial sort
+        applySort(0); // Toggle to descending
+    });
 </script>
 </body>
 </html>
