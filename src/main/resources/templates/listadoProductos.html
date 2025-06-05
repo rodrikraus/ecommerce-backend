@@ -25,6 +25,7 @@
             <th scope="col" data-column="4">Descripción</th>
             <th scope="col">Url de imagen</th>
             <th scope="col" data-column="6">Tags</th>
+            <th scope="col">Category</th>
             <th scope="col"></th> <!-- Columna vacía para el botón de modificar -->
             <th scope="col"></th> <!-- Columna vacía para el botón de borrar -->
         </tr>
@@ -38,6 +39,7 @@
             <td th:text="${producto.description}"></td>
             <td><img th:src="${producto.imageUrl}" alt="Imagen del producto" width="150"></td>
             <td th:text="${producto.tags}"></td>
+            <td th:text="${producto.productCategory}"></td>
             <td>
                 <a class="btn btn-success" th:href="@{/productos/modificarProducto/{id}(id=${producto.id})}" role="button">Modificar</a>
             </td>

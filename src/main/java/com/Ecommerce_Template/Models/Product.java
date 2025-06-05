@@ -22,4 +22,5 @@ public class Product {
     private String description;
     private String imageUrl;
     private String tags;
+    private String productCategory;
 }
