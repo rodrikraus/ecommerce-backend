@@ -1,4 +1,4 @@
-package com.Manel_Backend.Config;
+package com.Ecommerce_Template.Config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

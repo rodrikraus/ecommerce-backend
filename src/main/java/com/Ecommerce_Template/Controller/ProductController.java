@@ -1,11 +1,12 @@
-package com.Manel_Backend.Controller;
+package com.Ecommerce_Template.Controller;
 
-import com.Manel_Backend.Models.Product;
-import com.Manel_Backend.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import com.Ecommerce_Template.Models.Product;
+import com.Ecommerce_Template.Service.ProductService;
 
 import java.util.List;
 

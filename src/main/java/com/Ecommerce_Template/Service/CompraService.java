@@ -1,14 +1,14 @@
-package com.Manel_Backend.Service;
+package com.Ecommerce_Template.Service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.Manel_Backend.Models.Compra;
-import com.Manel_Backend.Models.CompraItem;
-import com.Manel_Backend.Models.Product;
-import com.Manel_Backend.Repository.CompraRepository;
+import com.Ecommerce_Template.Models.Compra;
+import com.Ecommerce_Template.Models.CompraItem;
+import com.Ecommerce_Template.Models.Product;
+import com.Ecommerce_Template.Repository.CompraRepository;
 
 import jakarta.transaction.Transactional;
 

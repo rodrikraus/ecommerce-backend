@@ -1,4 +1,4 @@
-package com.Manel_Backend.Config;
+package com.Ecommerce_Template.Config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

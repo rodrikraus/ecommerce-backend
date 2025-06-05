@@ -1,1 +1,1 @@
-"# manel-backend" 
+"# ecommerce-template" 

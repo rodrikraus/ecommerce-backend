@@ -1,4 +1,4 @@
-package com.Manel_Backend.Controller;
+package com.Ecommerce_Template.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Manel_Backend.Models.Compra;
-import com.Manel_Backend.Service.CompraService;
+import com.Ecommerce_Template.Models.Compra;
+import com.Ecommerce_Template.Service.CompraService;
 
 @RestController
 @RequestMapping("/api/compras")

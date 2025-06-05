@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>Manel-Backend</artifactId>
+	<artifactId>ecommerce-template</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Manel-Backend</name>
-	<description>Backend for Manel Website</description>
+	<name>ecommerce-template</name>
+	<description>Template backend for an ecommerce</description>
 	<url/>
 	<licenses>
 		<license/>

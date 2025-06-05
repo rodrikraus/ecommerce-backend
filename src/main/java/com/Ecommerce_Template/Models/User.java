@@ -1,4 +1,4 @@
-package com.Manel_Backend.Models;
+package com.Ecommerce_Template.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

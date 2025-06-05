@@ -1,4 +1,4 @@
-package com.Manel_Backend.Controller;
+package com.Ecommerce_Template.Controller;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Manel_Backend.Models.Product;
-import com.Manel_Backend.Service.ProductService;
+import com.Ecommerce_Template.Models.Product;
+import com.Ecommerce_Template.Service.ProductService;
 
 @RestController
 @RequestMapping("/api/productos")

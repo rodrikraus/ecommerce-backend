@@ -1,12 +1,12 @@
-package com.Manel_Backend.Service;
-
-import com.Manel_Backend.Models.Product;
-import com.Manel_Backend.Repository.ProductRepository;
+package com.Ecommerce_Template.Service;
 
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.Ecommerce_Template.Models.Product;
+import com.Ecommerce_Template.Repository.ProductRepository;
 
 import java.util.List;
 
