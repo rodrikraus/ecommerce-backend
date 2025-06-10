@@ -29,6 +29,8 @@ public class CompraRestController {
         compra.setId(c.getId());
         compra.setItems(c.getItems());
         compra.setShippingAddress(c.getShippingAddress());
+        compra.setNumeroCelular(c.getNumeroCelular());
+        compra.setEstado("PENDIENTE");
         BigDecimal total = new BigDecimal("0");
         for(CompraItem i : c.getItems()) {
             BigDecimal precioProducto = productService.buscarProducto(i.getProduct().getId()).getPrice();

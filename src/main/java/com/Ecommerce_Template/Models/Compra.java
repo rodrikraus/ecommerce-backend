@@ -21,6 +21,8 @@ public class Compra {
     private BigDecimal totalAmount;
     private String email;
     private String shippingAddress;
+    private String numeroCelular;
+    private String estado; // "PENDIENTE","ENTREGADO", "CANCELADO"
 
     /* No hay autenticación de usuarios
     @ManyToOne
