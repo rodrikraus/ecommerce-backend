@@ -57,6 +57,18 @@
         </tbody>
     </table>
 
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" id="prevPage">
+                <a class="page-link" href="#" tabindex="-1">Anterior</a>
+            </li>
+            <li class="page-item"><span class="page-link" id="currentPageInfo">Página 1</span></li>
+            <li class="page-item" id="nextPage">
+                <a class="page-link" href="#">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
+
     <div th:if="${compras == null or compras.empty}">
         La lista de compras está vacía.
     </div>
@@ -101,24 +113,58 @@
     const upArrow = " ↑";
     const downArrow = " ↓";
 
+    const itemsPerPage = 20;
+    let currentPage = 1;
+    let currentRows = []; // This will hold the array of <tr> elements to be paginated
+
+    function displayPage(pageNumber) {
+        currentPage = pageNumber;
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        tbody.innerHTML = ''; // Clear current table body
+
+        const pageRows = currentRows.slice(startIndex, endIndex);
+        pageRows.forEach(row => {
+            tbody.appendChild(row); // Append the actual row object (these are from currentRows)
+        });
+
+        document.getElementById('currentPageInfo').textContent = `Página ${currentPage}`;
+        const prevPageLi = document.getElementById('prevPage');
+        const nextPageLi = document.getElementById('nextPage');
+        
+        prevPageLi.classList.toggle('disabled', currentPage === 1);
+
+        const totalPages = Math.ceil(currentRows.length / itemsPerPage);
+        nextPageLi.classList.toggle('disabled', currentPage === totalPages || totalPages === 0);
+
+        const paginationNav = document.querySelector('nav[aria-label="Page navigation"]');
+        if (paginationNav) { // Ensure paginationNav exists
+            if (totalPages <= 1) {
+                paginationNav.style.display = 'none';
+            } else {
+                paginationNav.style.display = '';
+            }
+        }
+    }
+
     function applySort(column, keepDirection = false) {
         if (!keepDirection) {
             if (currentSortColumn === column) {
                 sortDirections[column] = sortDirections[column] === 'asc' ? 'desc' : 'asc';
             } else {
-                if (currentSortColumn !== -1 && sortDirections[currentSortColumn] !== undefined) {
-                    sortDirections[currentSortColumn] = 'asc';
-                }
+                // Optional: reset previous sort direction if changing column
+                // if (currentSortColumn !== -1 && sortDirections[currentSortColumn] !== undefined) {
+                //    sortDirections[currentSortColumn] = 'asc'; 
+                // }
                 currentSortColumn = column;
-                sortDirections[column] = 'asc';
+                sortDirections[column] = 'asc'; // Default to ascending for new column
             }
         }
 
         const direction = sortDirections[column] === 'asc' ? 1 : -1;
-        // Always get rows from tbody, as it might be filtered
-        let rowsToSort = Array.from(tbody.querySelectorAll('tr'));
-
-        rowsToSort.sort((a, b) => {
+        
+        currentRows.sort((a, b) => {
             const aVal = a.cells[column].textContent;
             const bVal = b.cells[column].textContent;
             switch (column) {
@@ -136,8 +182,7 @@
             }
         });
 
-        tbody.innerHTML = '';
-        rowsToSort.forEach(row => tbody.appendChild(row));
+        displayPage(1); // Display the first page of the sorted data
 
         headers.forEach(th => {
             let headerText = th.textContent.replace(upArrow, '').replace(downArrow, '');
@@ -157,8 +202,28 @@
 
     // Default sort by date on page load (descending)
     document.addEventListener('DOMContentLoaded', function() {
-        applySort(2); // Initial sort (e.g., to ascending)
-        applySort(2); // Toggle to descending
+        // originalTableRows is defined from tbody here.
+        // const originalTableRows = Array.from(tbody.querySelectorAll('tr')); // This line is already present earlier in the script
+        
+        currentRows = [...originalTableRows]; // Initialize currentRows using spread operator on originalTableRows
+
+        applySort(2); 
+        applySort(2); 
+
+        if(currentRows.length === 0 && originalTableRows.length === 0) { // Only show if initially empty from server
+            // The Thymeleaf th:if handles the "lista vacia" message from server.
+            // This JS part is more for client-side filtering resulting in empty.
+            // Let's ensure pagination is hidden if table is truly empty from start.
+            const paginationNav = document.querySelector('nav[aria-label="Page navigation"]');
+            if(paginationNav) paginationNav.style.display = 'none';
+            // Optional: if you want a JS-driven message when server sends empty list and Thymeleaf doesn't render.
+            // But the th:if should cover it.
+            // tbody.innerHTML = '<tr><td colspan="8">La lista de compras está vacía.</td></tr>';
+        } else if (currentRows.length === 0 && originalTableRows.length > 0) {
+            // This case means initial load had items, but default sort somehow emptied it (unlikely here)
+            // or more relevantly, if a filter on load feature were added.
+            // For now, displayPage(1) handles empty currentRows by hiding pagination.
+        }
     });
 
     // Search functionality
@@ -166,34 +231,49 @@
     searchBar.addEventListener('keyup', function() {
         const searchTerm = searchBar.value.toLowerCase();
         
-        tbody.innerHTML = ''; // Clear current rows to re-populate
-
-        const filteredRows = originalTableRows.filter(row => {
+        const filteredResultRows = originalTableRows.filter(row => {
             const idText = row.cells[0].textContent.toLowerCase();
-            const usuarioText = row.cells[1].textContent.toLowerCase();
+            const emailText = row.cells[1].textContent.toLowerCase(); 
             const fechaText = row.cells[2].textContent.toLowerCase();
             const totalText = row.cells[3].textContent.toLowerCase();
             const direccionText = row.cells[4].textContent.toLowerCase();
-            const it = row.cells[5].textContent.toLowerCase();
+            const itemsContent = row.cells[5].textContent.toLowerCase();
             
             const match = idText.includes(searchTerm) ||
-                   usuarioText.includes(searchTerm) ||
+                   emailText.includes(searchTerm) ||
                    fechaText.includes(searchTerm) ||
                    totalText.includes(searchTerm) ||
                    direccionText.includes(searchTerm) ||
-                   it.includes(searchTerm);
-            
-            // Important: Directly append filtered rows here.
-            // The applySort function will then work on these appended rows.
-            if (match) {
-                tbody.appendChild(row.cloneNode(true)); // Append a clone to tbody
-            }
-            return match; // Still needed for any other use of filteredRows, though direct append is primary
+                   itemsContent.includes(searchTerm);
+            return match; 
         });
 
-        // If a sort is active, re-apply it to the filtered & appended rows
+        currentRows = filteredResultRows;
+
         if (currentSortColumn !== -1) {
-            applySort(currentSortColumn, true); // true to keep current direction
+            applySort(currentSortColumn, true); 
+        } else {
+            displayPage(1); 
+        }
+
+        if (currentRows.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8">No se encontraron resultados que coincidan con la búsqueda.</td></tr>';
+            const paginationNav = document.querySelector('nav[aria-label="Page navigation"]');
+            if (paginationNav) paginationNav.style.display = 'none';
+        }
+    });
+
+    document.getElementById('prevPage').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (!this.classList.contains('disabled')) {
+            displayPage(currentPage - 1);
+        }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (!this.classList.contains('disabled')) {
+            displayPage(currentPage + 1);
         }
     });
 </script>
