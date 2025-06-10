@@ -37,8 +37,18 @@
             <td th:text="${#temporals.format(compra.fechaCompra, 'dd/MM/yyyy HH:mm')}"></td>
             <td th:text="'$'+${compra.totalAmount}"></td>
             <td th:text="${compra.shippingAddress}"></td>
-            <td th:text="${compra.numeroCelular}"></td>
-            <td th:text="${compra.estado}"></td>
+            <td>
+            <a th:href="'https://wa.me/' + ${#strings.replace(compra.numeroCelular, '[^\\d]', '')}" target="_blank" 
+                th:text="${compra.numeroCelular}"></a>
+            </td>
+            <td>
+            <span th:switch="${compra.estado}">
+                <span th:case="'ENTREGADO'" class="badge bg-success" th:text="${compra.estado}"></span>
+                <span th:case="'PENDIENTE'" class="badge bg-warning text-dark" th:text="${compra.estado}"></span>
+                <span th:case="'CANCELADO'" class="badge bg-danger" th:text="${compra.estado}"></span>
+            </span>
+            </td>
+
             <td>
                 <ul>
                     <li th:each="item : ${compra.items}">
