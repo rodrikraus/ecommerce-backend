@@ -23,6 +23,8 @@
             <th scope="col" data-column="2" style="cursor: pointer;">Fecha</th>
             <th scope="col" data-column="3" style="cursor: pointer;">Total</th>
             <th scope="col" data-column="4" style="cursor: pointer;">Dirección</th>
+            <th scope="col"style="cursor: pointer;">WhatsApp</th>
+            <th scope="col"style="cursor: pointer;">Estado</th>
             <th scope="col">Ítems</th>
             <th scope="col"></th> <!-- Columna vacía para el botón de modificar -->
             <th scope="col"></th> <!-- Columna vacía para el botón de borrar -->
@@ -35,6 +37,8 @@
             <td th:text="${#temporals.format(compra.fechaCompra, 'dd/MM/yyyy HH:mm')}"></td>
             <td th:text="'$'+${compra.totalAmount}"></td>
             <td th:text="${compra.shippingAddress}"></td>
+            <td th:text="${compra.numeroCelular}"></td>
+            <td th:text="${compra.estado}"></td>
             <td>
                 <ul>
                     <li th:each="item : ${compra.items}">

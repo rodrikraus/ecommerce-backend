@@ -42,6 +42,8 @@ public class CompraController {
             // 2. Update basic fields
             compraExistente.setEmail(compraModificada.getEmail());
             compraExistente.setShippingAddress(compraModificada.getShippingAddress());
+            compraExistente.setNumeroCelular(compraModificada.getNumeroCelular());
+            compraExistente.setEstado(compraModificada.getEstado());
             // totalAmount will be recalculated
 
             // 3. Process Items - Update quantities for existing items

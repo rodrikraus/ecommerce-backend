@@ -52,11 +52,58 @@
                 <input type="text" class="form-control" id="shippingAddress" th:field="*{shippingAddress}" required>
             </div>
 
+            <div class="mb-3">
+                <label for="numeroCelular" class="form-label">Número de WhatsApp</label>
+                <input type="text" class="form-control" id="numeroCelular" th:field="*{numeroCelular}" required>
+            </div>
+
+            <!-- Estado de la compra -->
+            <div class="mb-3">
+                <label>Estado</label>
+                <span id="estadoDisplay" class="badge bg-secondary" th:text="*{estado}">PENDIENTE</span>
+            </div>
+
+            <input type="hidden" th:field="*{estado}" id="estado">
+            <div class="text-center mb-4">
+                <button type="button" class="btn btn-danger me-2"
+                        onclick="setEstado('CANCELADO')">Marcar como cancelada</button>
+
+                <button type="button" class="btn btn-warning me-2"
+                        onclick="setEstado('PENDIENTE')">Marcar como pendiente</button>
+                <button type="button" class="btn btn-success"
+                        onclick="setEstado('ENTREGADO')">Marcar como entregada</button>
+            </div>
+
+
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Actualizar</button>
                 <a href="/compras" class="btn btn-secondary ms-2">Cancelar</a>
             </div>
         </form>
     </div>
+
+    <script>
+    function setEstado(estado) {
+        document.getElementById('estado').value = estado;
+
+        // Update visible label
+        const display = document.getElementById('estadoDisplay');
+        display.textContent = estado;
+
+        // Change badge color based on estado
+        display.className = 'badge'; // reset
+        if (estado === 'PENDIENTE') {
+            display.classList.add('bg-warning', 'text-dark');
+        } else if (estado === 'CANCELADO') {
+            display.classList.add('bg-danger');
+        } else if (estado === 'ENTREGADO') {
+            display.classList.add('bg-success');
+        } else {
+            display.classList.add('bg-secondary');
+        }
+    }
+    </script>
+
+
 </body>
 </html>
